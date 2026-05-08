@@ -16,12 +16,3 @@ if st.button("Calcular"):
     st.success(f"El factorial es {factorial(numero)}")
 
 
-st.title("Calculadora de cuadrados")
-
-# Entrada numérica
-numero = st.number_input("Ingresa un número:", value=0)
-
-# Botón
-if st.button("Calcular"):
-    resultado = numero ** 2
-    st.success(f"El cuadrado es: {resultado}")
