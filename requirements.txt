@@ -1,3 +1,13 @@
+# Librerías principales
 streamlit
 yfinance
 pandas
+numpy
+
+# Visualización
+matplotlib
+plotly
+
+# Opcional: análisis estadístico y machine learning
+scikit-learn
+statsmodels
