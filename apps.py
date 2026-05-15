@@ -27,25 +27,6 @@ for nombre, df in data.items():
     st.line_chart(df["Close"])
     st.write(df.tail(3))  # últimas 3 filas
 
-""" INICIO DE MODULO ANTERIOR # Informe automático
-st.header("📊 Informe y Sugerencias")
-
-for nombre, df in data.items():
-    if not df.empty and len(df) > 1:
-        ultimo = df["Close"].iloc[-1]
-        penultimo = df["Close"].iloc[-2]
-        cambio = (ultimo - penultimo) / penultimo * 100
-        tendencia = "📉 Bajista" if cambio < 0 else "📈 Alcista"
-
-        st.write(f"**{nombre}**: Último cierre = {ultimo:.2f} USD")
-        st.write(f"Tendencia del día: {tendencia} ({cambio:.2f}%)")
-
-        if cambio > 0:
-            st.success(f"Sugerencia: {nombre} muestra fuerza positiva, podría ser buen momento para evaluar entrada.")
-        else:
-            st.warning(f"Sugerencia: {nombre} está en retroceso, mejor esperar confirmación de tendencia.")
-    else:
-        st.error(f"No hay suficientes datos para {nombre}") FINAL DE MODULO ANTERIOR """
 
 # INICIO DE LA ACTUALIZACIÓN
 import matplotlib.pyplot as plt
