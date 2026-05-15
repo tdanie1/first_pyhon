@@ -27,7 +27,7 @@ for nombre, df in data.items():
     st.line_chart(df["Close"])
     st.write(df.tail(3))  # últimas 3 filas
 
-# Informe automático
+""" INICIO DE MODULO ANTERIOR # Informe automático
 st.header("📊 Informe y Sugerencias")
 
 for nombre, df in data.items():
@@ -45,7 +45,71 @@ for nombre, df in data.items():
         else:
             st.warning(f"Sugerencia: {nombre} está en retroceso, mejor esperar confirmación de tendencia.")
     else:
+        st.error(f"No hay suficientes datos para {nombre}") FINAL DE MODULO ANTERIOR """
+
+# INICIO DE LA ACTUALIZACIÓN
+import matplotlib.pyplot as plt
+
+# Informe automático
+st.header("📊 Informe y Sugerencias")
+
+for nombre, df in data.items():
+    if not df.empty and len(df) > 1:
+        # Caso: Close es DataFrame con varias columnas
+        if isinstance(df["Close"], pd.DataFrame):
+            cambios = []
+            for col in df["Close"].columns:
+                ultimo = float(df["Close"][col].iloc[-1])
+                penultimo = float(df["Close"][col].iloc[-2])
+                cambio = (ultimo - penultimo) / penultimo * 100
+                cambios.append(cambio)
+                tendencia = "📉 Bajista" if cambio < 0 else "📈 Alcista"
+
+                st.subheader(f"{nombre} - {col}")
+                st.write(f"Último cierre = {ultimo:.2f} USD")
+                st.write(f"Tendencia del día: {tendencia} ({cambio:.2f}%)")
+
+                if cambio > 0:
+                    st.success(f"Sugerencia: {col} muestra fuerza positiva, podría ser buen momento para evaluar entrada.")
+                else:
+                    st.warning(f"Sugerencia: {col} está en retroceso, mejor esperar confirmación de tendencia.")
+
+                # 📈 Gráfico de evolución
+                fig, ax = plt.subplots()
+                df["Close"][col].plot(ax=ax, title=f"Evolución de {col}")
+                ax.set_ylabel("Precio (USD)")
+                st.pyplot(fig)
+
+            # Informe agregado (promedio de variaciones)
+            promedio_cambio = sum(cambios) / len(cambios)
+            tendencia_global = "📉 Bajista" if promedio_cambio < 0 else "📈 Alcista"
+            st.info(f"**Resumen {nombre}**: Tendencia global = {tendencia_global} ({promedio_cambio:.2f}%)")
+
+        else:
+            # Caso normal: Close es Serie
+            ultimo = float(df["Close"].iloc[-1])
+            penultimo = float(df["Close"].iloc[-2])
+            cambio = (ultimo - penultimo) / penultimo * 100
+            tendencia = "📉 Bajista" if cambio < 0 else "📈 Alcista"
+
+            st.subheader(nombre)
+            st.write(f"Último cierre = {ultimo:.2f} USD")
+            st.write(f"Tendencia del día: {tendencia} ({cambio:.2f}%)")
+
+            if cambio > 0:
+                st.success(f"Sugerencia: {nombre} muestra fuerza positiva, podría ser buen momento para evaluar entrada.")
+            else:
+                st.warning(f"Sugerencia: {nombre} está en retroceso, mejor esperar confirmación de tendencia.")
+
+            # 📈 Gráfico de evolución
+            fig, ax = plt.subplots()
+            df["Close"].plot(ax=ax, title=f"Evolución de {nombre}")
+            ax.set_ylabel("Precio (USD)")
+            st.pyplot(fig)
+    else:
         st.error(f"No hay suficientes datos para {nombre}")
+
+# FIN DE LA ACTUALIZACION
 
 # Ranking simple
 st.header("🏆 Ranking de Opciones")
